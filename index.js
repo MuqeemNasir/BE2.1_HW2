@@ -100,7 +100,7 @@ async function getAllHotels() {
     }
 }
 
-getAllHotels()
+// getAllHotels()
 
 // Question 4: 
 
@@ -117,7 +117,7 @@ async function getHotelByName(hotelName) {
     }
 }
 
-getHotelByName("Lake View")
+// getHotelByName("Lake View")
 
 // Question 5: 
 
@@ -134,7 +134,7 @@ async function getHotelsWithParking() {
     }
 }
 
-getHotelsWithParking()
+// getHotelsWithParking()
 
 // Question 6: 
 
@@ -151,7 +151,7 @@ async function getHotelsWithRestaurant() {
     }
 }
 
-getHotelsWithRestaurant()
+// getHotelsWithRestaurant()
 
 // Question 7: 
 
@@ -168,7 +168,7 @@ async function getHotelsWithCategory(categoryType) {
     }
 }
 
-getHotelsWithCategory("Mid-Range")
+// getHotelsWithCategory("Mid-Range")
 
 // Question 8: 
 
@@ -185,7 +185,7 @@ async function getHotelsByPriceRange(price) {
     }
 }
 
-getHotelsByPriceRange("$$$$ (61+)")
+// getHotelsByPriceRange("$$$$ (61+)")
 
 // Question 9: 
 
@@ -202,7 +202,7 @@ async function getHotelsByRating(ratingHotel) {
     }
 }
 
-getHotelsByRating(4.0)
+// getHotelsByRating(4.0)
 
 // Question 10: 
 
@@ -219,4 +219,45 @@ async function getHotelByPhoneNumber(phone) {
     }
 }
 
-getHotelByPhoneNumber("+1299655890")
+// getHotelByPhoneNumber("+1299655890")
+
+// BE2.3_HW2
+
+// Question 1: 
+
+async function updateHotelById(hotelId, dataToUpdate){
+    try{
+        const updatedCheckout = await Hotel.findByIdAndUpdate(hotelId, dataToUpdate, {new: true})
+        console.log(updatedCheckout)
+    }catch(error){
+        console.log("Error in changing Checkout Time.", error)
+    }
+}
+
+// updateHotelById("68ab41d7fff4df38696d9fe4", {checkOutTime: "11:00 AM"})
+
+// Question 2: 
+
+async function updateHotelByName(hotelName, dataToUpdate){
+    try{
+        const updatedRating = await Hotel.findOneAndUpdate({name: hotelName}, dataToUpdate, {new: true})
+        console.log(updatedRating)
+    }catch(error){
+        console.log("Error in changing Rating.")
+    }
+}
+
+// updateHotelByName("Sunset Resort", {rating: 4.2})
+
+// Question 3: 
+
+async function updateHotelByPhoneNumber(hotelPhoneNumber, dataToUpdate){
+    try{
+        const updatedPhoneNumber = await Hotel.findOneAndUpdate({phoneNumber: hotelPhoneNumber}, dataToUpdate, {new: true})
+        console.log(updatedPhoneNumber)
+    }catch(error){
+        console.log("Error in updating phone number.")
+    }
+}
+
+updateHotelByPhoneNumber("+1299655890", {phoneNumber: "+1997687392"})
