@@ -249,11 +249,25 @@ app.get("/hotels/directory/:phoneNumber", async(req, res) => {
 async function updateHotelById(hotelId, dataToUpdate){
     try{
         const updatedCheckout = await Hotel.findByIdAndUpdate(hotelId, dataToUpdate, {new: true})
-        console.log(updatedCheckout)
+        // console.log(updatedCheckout)
+        return updatedCheckout
     }catch(error){
         console.log("Error in changing Checkout Time.", error)
     }
 }
+
+app.post("/hotels/:hotelId", async(req, res) => {
+    try{
+        const updHotel = await updateHotelById(req.params.hotelId, req.body)
+        if(updHotel){
+            res.status(200).json({message: "Hotel updated successfully.", updHotel: updHotel})
+        }else{
+            res.status(404).json({error: "Hotel not found."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to update hotel"})
+    }
+})
 
 // updateHotelById("68ab41d7fff4df38696d9fe4", {checkOutTime: "11:00 AM"})
 
