@@ -1,6 +1,11 @@
+const express = require('express')
+const app = express()
+
 const mongoose = require('mongoose')
 const { initializeDatabase } = require('./db/db.connect')
 const Hotel = require('./models/hotel.models')
+
+app.use(express.json())
 
 initializeDatabase()
 
@@ -77,7 +82,7 @@ async function createHotel(newHotel) {
     }
 }
 
-// createHotel(newHotel)
+// createHotel(newHotel)   
 
 // Question 1 & 2: 
 
@@ -94,11 +99,26 @@ async function seedHotel() {
 async function getAllHotels() {
     try {
         const allHotels = await Hotel.find()
-        console.log("All Hotels: ", allHotels)
+        // console.log("All Hotels: ", allHotels)
+        return allHotels
     } catch (error) {
         console.log(error)
     }
 }
+
+app.get("/hotels", async(req, res) => {
+    try{
+        const hotels = await getAllHotels()
+        if(hotels.length !== 0){
+            res.json(hotels)
+        }else{
+            res.status(400).json({error: "No hotel found."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotels."})
+    }
+})
+
 
 // getAllHotels()
 
@@ -108,7 +128,8 @@ async function getHotelByName(hotelName) {
     try {
         const nameOfHotel = await Hotel.findOne({ name: hotelName })
         if (nameOfHotel) {
-            console.log(`Hotel details of "${hotelName}": `, nameOfHotel)
+            // console.log(`Hotel details of "${hotelName}": `, nameOfHotel)
+            return nameOfHotel
         } else {
             console.log(`No Hotel found of name "${hotelName}".`)
         }
@@ -116,6 +137,19 @@ async function getHotelByName(hotelName) {
         console.log(error)
     }
 }
+
+app.get("/hotels/:hotelName", async(req, res) => {
+    try{
+        const hotels = await getHotelByName(req.params.hotelName)
+        if(hotels.length !== 0){
+            res.json(hotels)
+        }else{
+            res.status(404).json({error: "Hotel not found by name."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotel by name."})
+    }
+})
 
 // getHotelByName("Lake View")
 
@@ -159,7 +193,8 @@ async function getHotelsWithCategory(categoryType) {
     try {
         const categoryHotel = await Hotel.find({ category: categoryType })
         if (categoryHotel) {
-            console.log(`Hotels details with category "${categoryType}": `, categoryHotel)
+            // console.log(`Hotels details with category "${categoryType}": `, categoryHotel)
+            return categoryHotel
         } else {
             console.log(`No Hotel found with "${categoryType}" category.`)
         }
@@ -167,6 +202,19 @@ async function getHotelsWithCategory(categoryType) {
         console.log(error)
     }
 }
+
+app.get("/hotels/category/:hotelCategory", async(req, res) => {
+    try{
+        const hotels = await getHotelsWithCategory(req.params.hotelCategory)
+        if(hotels.length !== 0){
+            res.json(hotels)
+        }else{
+            res.status(404).json({error: "Hotel not found by hotel category."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotel by hotel category."})
+    }
+})
 
 // getHotelsWithCategory("Mid-Range")
 
@@ -193,7 +241,8 @@ async function getHotelsByRating(ratingHotel) {
     try {
         const hotelRating = await Hotel.find({ rating: ratingHotel })
         if (hotelRating) {
-            console.log(`Hotels details with rating "${ratingHotel}": `, hotelRating)
+            // console.log(`Hotels details with rating "${ratingHotel}": `, hotelRating)
+            return hotelRating
         } else {
             console.log(`No Hotel found with rating "${ratingHotel}".`)
         }
@@ -201,6 +250,19 @@ async function getHotelsByRating(ratingHotel) {
         console.log(error)
     }
 }
+
+app.get("/hotels/rating/:hotelRating", async(req, res) => {
+    try{
+        const hotels = await getHotelsByRating(req.params.hotelRating)
+        if(hotels.length !== 0){
+            res.json(hotels)
+        }else{
+            res.status(404).json({error: "Hotel not found by hotel rating."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotel by hotel rating."})
+    }
+})
 
 // getHotelsByRating(4.0)
 
@@ -210,7 +272,8 @@ async function getHotelByPhoneNumber(phone) {
     try {
         const hotelPhone = await Hotel.findOne({ phoneNumber: phone })
         if (hotelPhone) {
-            console.log(`Hotel details of phone number "${phone}": `, hotelPhone)
+            // console.log(`Hotel details of phone number "${phone}": `, hotelPhone)
+            return hotelPhone
         } else {
             console.log(`No Hotel found with phone number "${phone}".`)
         }
@@ -218,6 +281,19 @@ async function getHotelByPhoneNumber(phone) {
         console.log(error)
     }
 }
+
+app.get("/hotels/directory/:phoneNumber", async(req, res) => {
+    try{
+        const hotels = await getHotelByPhoneNumber(req.params.phoneNumber)
+        if(hotels.length !== 0){
+            res.json(hotels)
+        }else{
+            res.status(404).json({error: "Hotel not found by phone Number."})
+        }
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotel by phone number."})
+    }
+})
 
 // getHotelByPhoneNumber("+1299655890")
 
@@ -289,3 +365,9 @@ async function deleteHotelByPhoneNumber(hotelPhoneNumber){
 }
 
 // deleteHotelByPhoneNumber("+1234555890")
+
+const PORT = 3000
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+})
