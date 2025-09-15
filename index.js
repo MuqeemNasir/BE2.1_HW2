@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const serverless = require('serverless-http')
 const app = express()
 
 const mongoose = require('mongoose')
@@ -346,8 +347,11 @@ async function deleteHotelByPhoneNumber(hotelPhoneNumber){
 
 // deleteHotelByPhoneNumber("+1234555890")
 
-const PORT = 3000
+// const PORT = 3000
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`)
+// })
+
+module.exports = app
+module.exports.handler = serverless(app)
