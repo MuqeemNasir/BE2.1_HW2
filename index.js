@@ -10,7 +10,7 @@ const Hotel = require('./models/hotel.models')
 app.use(express.json())
 
 const corsOptions = {
-    origin: "https://hotel-frontend-9spy0wlwm-mohd-muqeem-nasirs-projects.vercel.app/",
+    origin: "*",
     credentials: true,
     optionSuccessStatus: 200,
 } 
