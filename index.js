@@ -10,7 +10,7 @@ const Hotel = require('./models/hotel.models')
 app.use(express.json())
 
 const corsOptions = {
-    origin: "*",
+    origin: "*", "https://hotel-frontend-theta-three.vercel.app"
     credentials: true,
     optionSuccessStatus: 200,
 } 
